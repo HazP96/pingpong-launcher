@@ -24,4 +24,6 @@ client.on("message", (channel, tags, message, self) => {
     // "@alca, heya!"
     client.say(channel, `Hey @${tags.username}, all up and running!`);
   }
+
+console.log("Hello World");
 });
