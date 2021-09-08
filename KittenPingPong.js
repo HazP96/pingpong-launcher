@@ -24,6 +24,6 @@ client.on("message", (channel, tags, message, self) => {
     // Grabs persons username on twitch and returns it in a string to confirm bot is running.]
     client.say(channel, `Hey @${tags.username}, all up and running!`);
   }
-
-console.log("Hello World");
+// uncomment below log to test if prompts are working in terminal.
+// console.log("Hello World");
 });
