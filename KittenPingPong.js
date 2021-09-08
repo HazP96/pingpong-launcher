@@ -2,7 +2,7 @@ const SECRETS = require("./secrets.js");
 const tmi = require("tmi.js");
 const axios = require("axios");
 
-let ballCount = 25;
+let ballCount = 1;
 
 const client = new tmi.Client({
   options: { debug: true },
@@ -53,8 +53,8 @@ client.on("message", (channel, tags, message, self) => {
     }
   }
 
-  if ((userName === "mawrtron" || userName === "tormentend_hazard" || userName === "bic_dig_boii" || userName === "kittenclubhouse") && message === "!reload") {
-    resetBallCount()
+  if ((userName === "mawrtron" || userName === "tormented_hazard" || userName === "bic_dig_boii" || userName === "kittenclubhouse") && message === "!reload") {
+    resetBallCount();
     client.say(channel, `lock and load!`);
   }
 
