@@ -16,7 +16,7 @@ client.on('message', (channel, tags, message, self) => {
     if (self) return;
 
     if (message.toLowerCase() === '!test') {
-        // "@alca, heya!"
-        client.say(channel, `Hey @${tags.username}, all up and running!`);
+    // Grabs persons username on twitch and returns it in a string to confirm bot is running.]
+    client.say(channel, `Hey @${tags.username}, all up and running!`);
     }
 });
