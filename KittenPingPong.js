@@ -41,15 +41,15 @@ client.on("message", (channel, tags, message, self) => {
   if (self) return; 
   //Ignores itself if accidentally uses a trigger ir someone is logged into the account.
   
-  if (message === "!ballcount") {
-    client.say(channel, `@${tags.username} there is ${ballCount} ball${ballCount !== 1 ? "'s" : ""} remaining`);
+  if (message === "!ballcount" || message === "!bc") {
+    client.say(channel, `@${tags.username} there is ${ballCount} ball${ballCount !== 1 ? "s" : ""} remaining`);
   }
   //Returns the remaining amount of balls in the tube - Avalible to everyone.
 
   const userName  = tags.username.toLowerCase();
   //Grabs persons twitch user and makes it into a const for the triggers to pull into messages.
 
-  if ((userName === "mawrtron" || userName === "tormented_hazard" || userName === "bic_dig_boii" || userName ==="kittenclubhouse") && message ==="FIRE!") {
+  if ((userName === "mawrtron" || userName === "tormented_hazard" || userName === "bic_dig_boii" || userName ==="kittenclubhouse") && (message === "!FIRE" || message === "FIRE!")) {
     ballCount--;
     launchBall();
     client.say(channel,`I AM FIRING THE CANNON NOW!!`);
@@ -61,7 +61,7 @@ client.on("message", (channel, tags, message, self) => {
     if (message === "balls out for Harambe") {
       ballCount--;
       launchBall();
-      client.say(channel, `There are ${ballCount} balls remaining!`);
+      client.say(channel,`There are ${ballCount} balls remaining!`);
       client.say(channel,`Thanks @${userName}! Dropping another ball for our fallen brother, Harambe! RIP hairy lad.`);
     }
   }
@@ -82,7 +82,7 @@ client.on("message", (channel, tags, message, self) => {
     
     //Makes sure there are balls to drop first.
     if (ballCount == 0) {
-      client.say(channel, `There are no balls remaining, nag me to refil`)
+      client.say(channel, `There are no balls remaining, nag me to refill!`)
     } else if (parseInt(bitCount) >= 500) {
       ballCount--;
       launchBall();
