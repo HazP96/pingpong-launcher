@@ -1,8 +1,41 @@
 const SECRETS = require("./secrets.js");
 const tmi = require("tmi.js");
 const axios = require("axios");
+const express = require('express')
+const app = express()
+const port = 3000
+const open = require('open');
 
 let ballCount = 25;
+let ballsToBeDropped = 0;
+
+////Express server junk
+app.use(express.static('public'))
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.post('/currentBallCount', (req, res) => {
+  res.json({
+    ballCount: ballCount,
+    ballsToBeDropped: ballsToBeDropped
+  })
+})
+
+app.post('/dropball',(req, res) => {
+  if (ballsToBeDropped < 0) ballsToBeDropped = 0;
+  ballsToBeDropped--
+  ballCount --
+  launchBall()
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
+
+open('http://localhost:3000/index.html');
+
 
 const client = new tmi.Client({
   options: { debug: true },
@@ -38,9 +71,9 @@ const resetBallCount = () => {
 }
 
 client.on("message", (channel, tags, message, self) => {
-  if (self) return; 
+  if (self) return;
   //Ignores itself if accidentally uses a trigger ir someone is logged into the account.
-  
+
   if (message === "!ballcount" || message === "!bc") {
     client.say(channel, `@${tags.username} there is ${ballCount} ball${ballCount !== 1 ? "s" : ""} remaining`);
   }
@@ -50,19 +83,20 @@ client.on("message", (channel, tags, message, self) => {
   //Grabs persons twitch user and makes it into a const for the triggers to pull into messages.
 
   if ((userName === "mawrtron" || userName === "tormented_hazard" || userName === "bic_dig_boii" || userName ==="kittenclubhouse") && (message === "!FIRE" || message === "FIRE!")) {
-    ballCount--;
-    launchBall();
-    client.say(channel,`I AM FIRING THE CANNON NOW!!`);
-    client.say(channel, `There are ${ballCount} balls remaining!`);
+    ballsToBeDropped++
+    client.say(channel,`Commence drop sequence!!`);
+  }
+
+  if ((userName === "mawrtron") && message === "test") {
+    ballsToBeDropped++
+    client.say(channel, "Reee")
   }
   //Allows the manual firing of pingpongballs if there are bits donated when there are none in the chamber.
 
   if (userName === "mawrtron" || userName === "tormented_hazard" || userName === "bic_dig_boii") {
     if (message === "balls out for Harambe") {
-      ballCount--;
-      launchBall();
-      client.say(channel,`There are ${ballCount} balls remaining!`);
-      client.say(channel,`Thanks @${userName}! Dropping another ball for our fallen brother, Harambe! RIP hairy lad.`);
+      ballsToBeDropped = 2
+      client.say(channel,`Thanks @${userName}! Dropping two hairy balls for our fallen brother, Harambe! RIP hairy lad.`);
     }
   }
   //Dont worry about this, easter eggs are fun. - Avalible to only the coolest of dudes.
@@ -79,22 +113,20 @@ client.on("message", (channel, tags, message, self) => {
     const userNameFromString = message.split(" ")[0];
     const bitCount = message.toLowerCase().match(regEx)[0];
     //Grabs bit amount and user name to pass on to check if enough bits were donated.
-    
+
     //Makes sure there are balls to drop first.
     if (ballCount == 0) {
       client.say(channel, `There are no balls remaining, nag me to refill!`)
     } else if (parseInt(bitCount) >= 500) {
-      ballCount--;
-      launchBall();
+      ballsToBeDropped++
       client.say(channel,`Thanks @${userNameFromString}! Dropping another ball for the kittens`);
-      client.say(channel, `There are ${ballCount} balls remaining!`);
       //If the bit donation is enough it triggers a drop and thanks the user.
     } else {
       //Do nothing
     }
 
     }
-    
+
   }
   // No user interaction
 );
