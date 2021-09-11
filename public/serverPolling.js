@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     let ballsPending = 0
     let secconds = 5
 
-    const setMessage = (message) => {
+    const setBallCountUI = (message) => {
         ballCountElement.innerHTML = message
     }
 
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             if (ballsToBeDropped > 0) {
                 ballsPending = ballsToBeDropped
             } else {
-                setMessage(`${ballCount} ball${ ballCount > 1 ? "s" : "" } remaining`)
+                setBallCountUI(ballCount)
             }
         })
     }
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     setInterval(() => { //
         if (ballsPending > 0 ) {
             if (secconds === 0) {
-                setMessage("FIRE!")
+                // setBallCountUI("FIRE!")
                 fetch('/dropball', {
                     method: "POST",
                     headers: {
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 secconds = 5
                 ballsPending--
             } else {
-                setMessage(`Dropping in ${secconds}`)
+                // setBallCountUI(`Dropping in ${secconds}`)
                 secconds--
             }
         } else {
