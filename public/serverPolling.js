@@ -21,6 +21,16 @@
         }
     }
 
+    const showHarambe = (show) => {
+        if (show) {
+            speechBubbleEl.children[0].style.backgroundSize = "cover"
+            speechBubbleEl.children[0].style.backgroundImage = "url(boi.jpg)"
+        } else {
+            speechBubbleEl.children[0].style.backgroundImage = "none"
+        }
+    }
+
+
     const showSpeechBubble = (show) => {
         if (show) {
             speechBubbleEl.style.opacity = 1
@@ -42,7 +52,7 @@
         })
         .then(response => response.json())
         .then(data => {
-            // console.log(data)
+            if (data.isHarambe) showHarambe(true)
             const { ballCount, ballsToBeDropped } = data
             displayBallCount = ballCount
             renderBalls(ballCount)
@@ -74,6 +84,7 @@
                     setSpeechBubbleMessage("FIRE!")
                     setTimeout(() => {
                         showSpeechBubble(false)
+                        showHarambe(false)
                         secconds = 5
                     }, 900)
                     ballsPending--

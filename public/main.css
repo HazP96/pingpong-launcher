@@ -39,6 +39,7 @@ html {
 }
 
 .bubble {
+  background-size: cover;
   place-items: center;
   display: grid;
   transform: scale(1.5);

@@ -7,7 +7,8 @@ const port = 3000
 const open = require('open');
 
 let ballCount = 25;
-let ballsToBeDropped = 0;
+let ballsToBeDropped = 0; //How many are is que
+let isHarambe = false
 
 ////Express server junk
 app.use(express.static('public'))
@@ -18,8 +19,9 @@ app.get('/', (req, res) => {
 
 app.post('/currentBallCount', (req, res) => {
   res.json({
-    ballCount: ballCount,
-    ballsToBeDropped: ballsToBeDropped
+    ballCount,
+    ballsToBeDropped,
+    isHarambe
   })
 })
 
@@ -27,6 +29,7 @@ app.post('/dropball',(req, res) => {
   if (ballsToBeDropped < 0) ballsToBeDropped = 0;
   ballsToBeDropped--
   ballCount --
+  isHarambe = false
   launchBall()
   res.json({})
 })
@@ -83,7 +86,7 @@ client.on("message", (channel, tags, message, self) => {
   //Grabs persons twitch user and makes it into a const for the triggers to pull into messages.
 
   if ((userName === "mawrtron" || userName === "tormented_hazard" || userName === "bic_dig_boii" || userName ==="kittenclubhouse") && (message === "!FIRE" || message === "FIRE!")) {
-    // ballsToBeDropped++
+    ballsToBeDropped++
     client.say(channel,`Commence drop sequence!!`);
   }
 
