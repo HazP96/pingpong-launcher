@@ -28,14 +28,14 @@ app.post('/dropball',(req, res) => {
   ballsToBeDropped--
   ballCount --
   launchBall()
+  res.json({})
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Ball counter listening at http://localhost:${port}`)
 })
 
 open('http://localhost:3000/index.html');
-
 
 const client = new tmi.Client({
   options: { debug: true },
@@ -83,13 +83,12 @@ client.on("message", (channel, tags, message, self) => {
   //Grabs persons twitch user and makes it into a const for the triggers to pull into messages.
 
   if ((userName === "mawrtron" || userName === "tormented_hazard" || userName === "bic_dig_boii" || userName ==="kittenclubhouse") && (message === "!FIRE" || message === "FIRE!")) {
-    ballsToBeDropped++
+    // ballsToBeDropped++
     client.say(channel,`Commence drop sequence!!`);
   }
 
-  if ((userName === "mawrtron") && message === "test") {
+  if ((userName === "mawrtron" || userName === "tormented_hazard") && message === "test") {
     ballsToBeDropped++
-    client.say(channel, "Reee")
   }
   //Allows the manual firing of pingpongballs if there are bits donated when there are none in the chamber.
 

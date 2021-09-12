@@ -1,11 +1,36 @@
-document.addEventListener("DOMContentLoaded", function(event) {
     const ballCountElement = document.getElementById('ballCountDisplay')
+    const ballElements = document.querySelectorAll('.ball')
+    const speechBubbleEl = document.getElementById('speechBubble')
+    const speechBubbleMessage = document.getElementById('speechBubbleMessage')
 
-    let ballsPending = 0
+    let ballsPending, displayBallCount
     let secconds = 5
 
     const setBallCountUI = (message) => {
-        ballCountElement.innerHTML = message
+        ballCountElement.textContent = message
+    }
+
+    const renderBalls = (ballCount) => {
+        const currentBallsDropped = 25 - ballCount
+        for (let i = 0; i < ballElements.length; i++) {
+            const ball = ballElements[i]
+            const ballNumber = parseInt(ball.dataset.ballnumber)
+            if (currentBallsDropped >= ballNumber) {
+                ball.style.display = "none"
+            }
+        }
+    }
+
+    const showSpeechBubble = (show) => {
+        if (show) {
+            speechBubbleEl.style.opacity = 1
+        } else {
+            speechBubbleEl.style.opacity = 0
+        }
+    }
+
+    const setSpeechBubbleMessage = (message) => {
+        speechBubbleMessage.textContent = message
     }
 
     const pollServer = () => {
@@ -17,8 +42,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
+            // console.log(data)
             const { ballCount, ballsToBeDropped } = data
+            displayBallCount = ballCount
+            renderBalls(ballCount)
             if (ballsToBeDropped > 0) {
                 ballsPending = ballsToBeDropped
             } else {
@@ -27,30 +54,38 @@ document.addEventListener("DOMContentLoaded", function(event) {
         })
     }
 
-    pollServer() // Inital poll
+
+    pollServer() // Initial poll from server
+    showSpeechBubble(false)
     setInterval(() => { //
+        renderBalls() //Removes balls from the image if required
         if (ballsPending > 0 ) {
+            showSpeechBubble(true)
             if (secconds === 0) {
-                // setBallCountUI("FIRE!")
                 fetch('/dropball', {
                     method: "POST",
                     headers: {
                         'Content-Type':'application/json'
                     }
+                }).then(() => {
+                    displayBallCount--
+                    renderBalls(displayBallCount)
+                    setBallCountUI(displayBallCount)
+                    setSpeechBubbleMessage("FIRE!")
+                    setTimeout(() => {
+                        showSpeechBubble(false)
+                        secconds = 5
+                    }, 900)
+                    ballsPending--
                 })
-                secconds = 5
-                ballsPending--
             } else {
-                // setBallCountUI(`Dropping in ${secconds}`)
+                setSpeechBubbleMessage(secconds)
                 secconds--
             }
         } else {
             pollServer()
         }
     }, 1000)
-
-
-});
 
 
 
