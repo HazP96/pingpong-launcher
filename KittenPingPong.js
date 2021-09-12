@@ -95,8 +95,9 @@ client.on("message", (channel, tags, message, self) => {
   }
   //Allows the manual firing of pingpongballs if there are bits donated when there are none in the chamber.
 
-  if (userName === "mawrtron" || userName === "tormented_hazard" || userName === "bic_dig_boii") {
+  if (userName === "mawrtron" || userName === "tormented_hazard" || userName === "bic_dig_boii" || userName === "kittenclubhouse") {
     if (message === "balls out for Harambe") {
+      isHarambe = true;
       ballsToBeDropped = 2
       client.say(channel,`Thanks @${userName}! Dropping two hairy balls for our fallen brother, Harambe! RIP hairy lad.`);
     }
@@ -111,7 +112,6 @@ client.on("message", (channel, tags, message, self) => {
 
   //This is the main triggering mechanism, when someone donates bits, stream labs announces it and this function grabs that and sends the HTTP request.  -Avalibe to StreamElements only!
   if (userName === "streamelements" && message.includes("bitties for the kitties!")) { // Stream elements zone + custom bit donation message ender for the statement to zone in on.
-    const regEx = /\d+/;
     const userNameFromString = message.split(" ")[0];
     const bitCount = message.split(" ")[3];
     //Grabs bit amount and user name to pass on to check if enough bits were donated.
