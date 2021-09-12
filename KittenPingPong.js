@@ -113,7 +113,7 @@ client.on("message", (channel, tags, message, self) => {
   if (userName === "streamelements" && message.includes("bitties for the kitties!")) { // Stream elements zone + custom bit donation message ender for the statement to zone in on.
     const regEx = /\d+/;
     const userNameFromString = message.split(" ")[0];
-    const bitCount = message.toLowerCase().match(regEx)[0];
+    const bitCount = message.split(" ")[3];
     //Grabs bit amount and user name to pass on to check if enough bits were donated.
 
     //Makes sure there are balls to drop first.
