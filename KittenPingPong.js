@@ -85,7 +85,7 @@ client.on("message", (channel, tags, message, self) => {
   const userName  = tags.username.toLowerCase();
   //Grabs persons twitch user and makes it into a const for the triggers to pull into messages.
 
-  if ((userName === "mawrtron" || userName === "tormented_hazard" || userName === "bic_dig_boii" || userName ==="kittenclubhouse") && (message === "!FIRE" || message === "FIRE!")) {
+  if ((userName === "mawrtron" || userName === "tormented_hazard" || userName === "bic_dig_boii" || userName ==="kittenclubhouse") && (message === "!fire" || message === "fire!")) {
     ballsToBeDropped++
     client.say(channel,`Commence drop sequence!!`);
   }
@@ -119,7 +119,7 @@ client.on("message", (channel, tags, message, self) => {
     //Makes sure there are balls to drop first.
     if (ballCount == 0) {
       client.say(channel, `There are no balls remaining, nag me to refill!`)
-    } else if (parseInt(bitCount) >= 500) {
+    } else if (parseInt(bitCount) >= 300) {
       ballsToBeDropped++
       client.say(channel,`Thanks @${userNameFromString}! Dropping another ball for the kittens`);
       //If the bit donation is enough it triggers a drop and thanks the user.
